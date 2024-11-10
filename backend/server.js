@@ -6,6 +6,9 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import eae from "express-async-errors";
 
+import authRoutes from "./routes/authRoutes.js";
+import todoRoutes from "./routes/todoRoutes.js";
+import errorMiddelware from "./middlewares/errorMiddleware.js";
 import connectDB from "./config/db_connect.js";
 
 dotenv.config(); // Config to add .env file // dotenv.config({path : './config'})
@@ -20,8 +23,14 @@ app.use(morgan("dev"));
 
 // Get API
 app.get("/", (req, res) => {
-  res.send("<h1> Welcome to To-Do List APplication </h1>");
+  res.send("<h1> Welcome to To-Do List Application </h1>");
 });
+
+app.use("/api/v1/auth", authRoutes);
+console.log("Server");
+app.use("/api/v1/todo", todoRoutes);
+
+app.use(errorMiddelware);
 
 const PORT = process.env.PORT || 8080; //Port No from Config File
 const DEV_MODE = process.env.DEV_MODE || "Development"; // DEV_MODE from Config File
